@@ -69,15 +69,18 @@ def move(data):
     
     # Choose a random direction to move in
     directions = [[0,1], [0,-1], [-1,0], [1,0]]
+    last_call = []
     possible_moves = []
     for move in directions:
         x,y = you_head[0]+move[0], you_head[1]+move[1]
         # print(f"MOVE: {move}")
-        temp1 = check_wall(board_dim,x,y)
-        temp2 = check_other_snake(snakes,snake_heads,x,y)
-        print(temp1,temp2)
-        if temp1 and temp2:
+        wall_check = check_wall(board_dim,x,y)
+        snake_check = check_other_snake(snakes,snake_heads,x,y)
+        print(wall_check,snake_check)
+        if wall_check and snake_check:
             possible_moves.append(move)
+        if wall_check:
+            last_call.append(move)
     
     for move in possible_moves:
         x,y = you_head[0]+move[0], you_head[1]+move[1]
@@ -90,7 +93,7 @@ def move(data):
         print(f"RANDOM POSSBILE MOVE: {move} out of {possible_moves}")
         return {"move": assign_move(move)}
     else:
-        move = random.choice(directions)
+        move = random.choice(last_call)
         print(f"RANDOM MOVE: {move}")
         return {"move": assign_move(move)}
 
